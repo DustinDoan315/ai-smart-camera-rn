@@ -1,4 +1,5 @@
 import CameraView from '@/ui/components/Camera/CameraView';
+import PerfHUD from '@/ui/components/HUD/PerfHUD';
 import React, { useEffect, useRef, useState } from 'react';
 import { CameraView as ExpoCameraView } from 'expo-camera';
 import {
@@ -8,6 +9,8 @@ import {
     View
     } from 'react-native';
 import { useEnsureCameraPermission } from '@/services/permissions/camera';
+import { useFrameLoop } from './useFrameLoop';
+import { useRuntimeStore } from '@/state/runtimeStore';
 
 
 export default function CameraScreen() {
@@ -15,8 +18,14 @@ export default function CameraScreen() {
   const cameraRef = useRef<ExpoCameraView>(null);
   const [facing, setFacing] = useState<"front" | "back">("back");
 
+  const isRunning = useRuntimeStore((s) => s.isRunning);
+  const setRunning = useRuntimeStore((s) => s.setRunning);
+  const reset = useRuntimeStore((s) => s.reset);
+
+
+  useFrameLoop({ intervalMs: 250, workMs: 20 });
+
   useEffect(() => {
-    // auto ask when first open
     if (!granted) requestPermission();
   }, [granted, requestPermission]);
 
@@ -29,9 +38,7 @@ export default function CameraScreen() {
             <Text style={styles.btnText}>Grant permission</Text>
           </Pressable>
         ) : (
-          <Text style={styles.desc}>
-            Permission is denied. Please enable Camera access in Settings.
-          </Text>
+          <Text style={styles.desc}>Enable Camera access in Settings.</Text>
         )}
       </View>
     );
@@ -41,10 +48,7 @@ export default function CameraScreen() {
     <View style={styles.container}>
       <CameraView ref={cameraRef} facing={facing} />
 
-      {/* Simple overlay controls */}
-      <View style={styles.topHud}>
-        <Text style={styles.hudText}>AI Smart Camera</Text>
-      </View>
+      <PerfHUD />
 
       <View style={styles.bottomBar}>
         <Pressable
@@ -52,6 +56,14 @@ export default function CameraScreen() {
           onPress={() => setFacing((p) => (p === "back" ? "front" : "back"))}
         >
           <Text style={styles.btnText}>Flip</Text>
+        </Pressable>
+
+        <Pressable style={styles.btn} onPress={() => setRunning(!isRunning)}>
+          <Text style={styles.btnText}>{isRunning ? "Pause" : "Run"}</Text>
+        </Pressable>
+
+        <Pressable style={styles.btn} onPress={reset}>
+          <Text style={styles.btnText}>Reset</Text>
         </Pressable>
       </View>
     </View>
@@ -65,7 +77,12 @@ const styles = StyleSheet.create({
   desc: { textAlign: "center", opacity: 0.7 },
   btn: { paddingVertical: 12, paddingHorizontal: 16, backgroundColor: "#222", borderRadius: 10 },
   btnText: { color: "white", fontWeight: "600" },
-  topHud: { position: "absolute", top: 12, left: 12 },
-  hudText: { color: "white" },
-  bottomBar: { position: "absolute", bottom: 24, width: "100%", alignItems: "center" },
+  bottomBar: {
+    position: "absolute",
+    bottom: 24,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 12,
+  },
 });
