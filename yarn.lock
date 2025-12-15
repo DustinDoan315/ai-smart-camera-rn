@@ -2076,6 +2076,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"AI Smart Camera@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "AI Smart Camera@workspace:."
+  dependencies:
+    "@tanstack/react-query": ^5.90.12
+    "@types/react": ~19.1.0
+    axios: ^1.13.2
+    expo: ~54.0.29
+    expo-camera: ^17.0.10
+    expo-status-bar: ~3.0.9
+    react: 19.1.0
+    react-native: 0.81.5
+    typescript: ~5.9.2
+    zustand: ^5.0.9
+  languageName: unknown
+  linkType: soft
+
 "abbrev@npm:^4.0.0":
   version: 4.0.0
   resolution: "abbrev@npm:4.0.0"
@@ -2117,23 +2134,6 @@ __metadata:
   checksum: 86a7f542af277cfbd77dd61e7df8422f90bac512953709003a1c530171a9d019d072e2400eab2b59f84b49ab9dd237be44315ca663ac73e82b3922d10ea5eafa
   languageName: node
   linkType: hard
-
-"ai-smart-camera-rn@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "ai-smart-camera-rn@workspace:."
-  dependencies:
-    "@tanstack/react-query": ^5.90.12
-    "@types/react": ~19.1.0
-    axios: ^1.13.2
-    expo: ~54.0.29
-    expo-camera: ^17.0.10
-    expo-status-bar: ~3.0.9
-    react: 19.1.0
-    react-native: 0.81.5
-    typescript: ~5.9.2
-    zustand: ^5.0.9
-  languageName: unknown
-  linkType: soft
 
 "anser@npm:^1.4.9":
   version: 1.4.10
